@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://hejki.org/schema/spring/module"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:beans="http://www.springframework.org/schema/beans"
+            targetNamespace="http://hejki.org/schema/spring/module"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified">
+
+    <xsd:import namespace="http://www.springframework.org/schema/beans"/>
+
+    <xsd:element name="service-export">
+        <xsd:complexType>
+            <xsd:choice minOccurs="1" maxOccurs="1">
+                <xsd:element ref="beans:bean"/>
+                <xsd:element ref="beans:ref"/>
+            </xsd:choice>
+            <xsd:attributeGroup ref="beanAttributes"/>
+            <xsd:attribute name="name" type="xsd:string" use="required">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+	Can be used to create one or more aliases illegal in an (XML) id.
+	Multiple aliases can be separated by any number of spaces, commas,
+	or semi-colons (or indeed any mixture of the three).
+				]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="port" type="xsd:positiveInteger">
+                <xsd:annotation>
+                    <xsd:documentation><![CDATA[
+    Set the port of the registry for the exported RMI service,
+	i.e. rmi://host:PORT/name
+	Default is 1099.
+				]]></xsd:documentation>
+                </xsd:annotation>
+            </xsd:attribute>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="simple-http-server">
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:sequence>
+                        <xsd:element name="context" type="simpleHttpServerContext"
+                                     minOccurs="1" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                    <xsd:attribute name="port" type="xsd:positiveInteger" default="8080">
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:complexType name="simpleHttpServerContext">
+        <xsd:attribute name="path" use="required" type="xsd:string"/>
+        <xsd:attribute name="ref" use="required" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:element name="service-proxy">
+        <xsd:annotation>
+            <xsd:documentation source="java:org.springframework.beans.factory.config.BeanDefinition"><![CDATA[
+	Defines a single (usually named) bean.
+			]]></xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:complexContent>
+                <xsd:extension base="beans:identifiedType">
+                    <xsd:attributeGroup ref="beanAttributes"/>
+                    <xsd:attribute name="service-url" type="xsd:string" use="required">
+                        <xsd:annotation>
+                            <xsd:documentation><![CDATA[
+    Set the URL of this remote accessor's target service.
+	The URL must be compatible with the rules of the particular remoting provider.
+                            ]]></xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:attribute>
+                </xsd:extension>
+            </xsd:complexContent>
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:attributeGroup name="beanAttributes">
+        <xsd:attribute name="exporter" type="exporterType" use="required">
+            <xsd:annotation>
+                <xsd:documentation><![CDATA[
+    The type of service exporter.
+                ]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+        <xsd:attribute name="service-interface" type="xsd:string" use="required">
+            <xsd:annotation>
+                <xsd:documentation source="java:java.lang.Class"><![CDATA[
+	The interface of the service to access.
+				]]></xsd:documentation>
+            </xsd:annotation>
+        </xsd:attribute>
+    </xsd:attributeGroup>
+
+    <xsd:simpleType name="exporterType">
+        <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="LOCAL"/>
+            <xsd:enumeration value="RMI"/>
+            <xsd:enumeration value="HESSIAN"/>
+            <xsd:enumeration value="BURLAP"/>
+            <xsd:enumeration value="HTTP_INVOKER"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+</xsd:schema>

@@ -1,0 +1,11 @@
+dependencies {
+    compile group: 'org.springframework', name: 'spring-beans', version: ext.springVersion
+    compile group: 'org.springframework', name: 'spring-context', version: ext.springVersion
+
+    testCompile 'com.caucho:hessian:4.0.7'
+    testCompile 'javax.servlet:servlet-api:2.5'
+//    testCompile 'javax.jms:jms-api:1.1-rev-1'
+
+    testCompile group: 'org.springframework', name: 'spring-web', version: ext.springVersion
+//    testCompile group: 'org.springframework', name: 'spring-jms', version: ext.springVersion
+}

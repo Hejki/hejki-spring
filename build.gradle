@@ -1,0 +1,33 @@
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'groovy'
+
+    group = 'org.hejki.spring'
+    version = '1.0'
+    sourceCompatibility = 1.6
+    targetCompatibility = 1.6
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        ext.spockVersion = '0.7-groovy-2.0'
+        ext.springVersion = '3.2.5.RELEASE'
+
+        testCompile 'junit:junit:4.11'
+        testCompile 'org.codehaus.groovy:groovy-all:2.1.5'
+        testCompile "org.spockframework:spock-core:${ext.spockVersion}"
+        testCompile "org.spockframework:spock-spring:${ext.spockVersion}"
+        testCompile "org.springframework:spring-test:${ext.springVersion}"
+    }
+
+    jar {
+        manifest {
+            attributes provider: 'gradle'
+            attributes 'Implementation-Title': name
+            attributes 'Implementation-Version': version
+        }
+    }
+}

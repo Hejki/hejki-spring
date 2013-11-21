@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:module="http://hejki.org/schema/spring/module"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://hejki.org/schema/spring/module http://hejki.org/schema/module/spring-module.xsd">
+
+    <module:service-proxy id="hessian"
+                          exporter="HESSIAN"
+                          service-url="http://localhost:8080/moduleService"
+                          service-interface="org.hejki.spring.config.ModuleService"/>
+
+    <module:service-proxy id="burlap"
+                          exporter="BURLAP"
+                          service-url="http://localhost:8080/moduleService"
+                          service-interface="org.hejki.spring.config.ModuleService"/>
+
+    <module:service-proxy id="invoker"
+                          exporter="HTTP_INVOKER"
+                          service-url="http://localhost:8080/moduleService"
+                          service-interface="org.hejki.spring.config.ModuleService"/>
+
+    <module:service-proxy id="local"
+                          exporter="LOCAL"
+                          service-url="moduleService"
+                          service-interface="org.hejki.spring.config.ModuleService"/>
+
+    <bean id="moduleService" class="org.hejki.spring.config.ModuleServiceImpl"/>
+    <bean class="org.springframework.remoting.rmi.RmiServiceExporter">
+        <property name="serviceName" value="moduleService"/>
+        <property name="service" ref="moduleService"/>
+        <property name="serviceInterface" value="org.hejki.spring.config.ModuleService"/>
+        <property name="registryPort" value="1199"/>
+    </bean>
+    <module:service-proxy id="rmi"
+                          exporter="RMI"
+                          service-url="rmi://localhost:1199/moduleService"
+                          service-interface="org.hejki.spring.config.ModuleService"/>
+</beans>

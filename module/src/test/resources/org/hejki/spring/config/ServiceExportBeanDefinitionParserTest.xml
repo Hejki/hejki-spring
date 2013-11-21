@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:module="http://hejki.org/schema/spring/module"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://hejki.org/schema/spring/module http://hejki.org/schema/module/spring-module.xsd">
+
+    <bean id="moduleService" class="org.hejki.spring.config.ModuleServiceImpl"/>
+
+    <module:service-export name="/hessian"
+                        exporter="HESSIAN"
+                        service-interface="org.hejki.spring.config.ModuleService">
+        <bean class="org.hejki.spring.config.ModuleServiceImpl"/>
+    </module:service-export>
+
+    <module:service-export name="/burlap"
+                        exporter="BURLAP"
+                        service-interface="org.hejki.spring.config.ModuleService">
+        <ref local="moduleService"/>
+    </module:service-export>
+
+    <module:service-export name="localService"
+                           exporter="LOCAL"
+                           service-interface="org.hejki.spring.config.ModuleService">
+        <ref local="moduleService"/>
+    </module:service-export>
+
+    <module:service-export name="rmiService"
+                           exporter="RMI"
+                           port="1199"
+                           service-interface="org.hejki.spring.config.ModuleService">
+        <ref local="moduleService"/>
+    </module:service-export>
+
+    <module:service-export name="/httpService"
+                           exporter="HTTP_INVOKER"
+                           service-interface="org.hejki.spring.config.ModuleService">
+        <ref local="moduleService"/>
+    </module:service-export>
+</beans>

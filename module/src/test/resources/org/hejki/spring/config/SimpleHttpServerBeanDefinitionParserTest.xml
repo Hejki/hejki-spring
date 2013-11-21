@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:module="http://hejki.org/schema/spring/module"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://hejki.org/schema/spring/module http://hejki.org/schema/module/spring-module.xsd">
+
+    <module:simple-http-server id="simpleServer" port="9090">
+        <module:context path="/service" ref="service"/>
+    </module:simple-http-server>
+
+    <bean id="service" class="org.hejki.spring.config.ModuleServiceImpl"/>
+</beans>
